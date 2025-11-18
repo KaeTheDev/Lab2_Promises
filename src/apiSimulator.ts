@@ -25,3 +25,25 @@ interface Product {
       }, 1000);
     });
   };
+
+
+export const fetchProductReviews = (
+    productId: number
+  ): Promise<ProductReviews[]> => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (Math.random() < 0.8) {
+          const allReviews: ProductReviews[] = [
+            { productId: 1, rating: 5, productReview: "Great!" },
+            { productId: 3, rating: 3, productReview: "Just OK" },
+            { productId: 2, rating: 4, productReview: "Good sound" },
+          ];
+  
+          // Filter only reviews for the requested productId
+          resolve(allReviews.filter((r) => r.productId === productId));
+        } else {
+          reject(`Failed to fetch reviews for product ID ${productId}`);
+        }
+      }, 1500);
+    });
+  };  
