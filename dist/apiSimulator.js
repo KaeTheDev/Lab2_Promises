@@ -5,7 +5,7 @@ export const fetchProductCatalog = () => {
                 resolve([
                     { id: 1, name: "Laptop", price: 1200 },
                     { id: 2, name: "Headphones", price: 200 },
-                    { id: 3, name: "Phone", price: 150 },
+                    { id: 3, name: "Phone", price: 15 },
                 ]);
             }
             else {
