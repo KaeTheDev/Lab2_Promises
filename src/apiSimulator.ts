@@ -1,3 +1,5 @@
+import  { NetworkError, DataError } from "./error.js";
+
 interface Product {
     id: number;
     name: string;
@@ -25,8 +27,10 @@ interface Product {
             { id: 2, name: "Headphones", price: 200 },
             { id: 3, name: "Phone", price: 15},
           ]);
+
+          
         } else {
-          reject("Failed to fetch product catalog");
+          reject(new NetworkError("Failed to fetch product catalog"));
         }
       }, 1000);
     });
@@ -48,7 +52,7 @@ export const fetchProductReviews = (
           // Filter only reviews for the requested productId
           resolve(allReviews.filter((r) => r.productId === productId));
         } else {
-          reject(`Failed to fetch reviews for product ID ${productId}`);
+          reject(new NetworkError(`Failed to fetch reviews for product ID ${productId}`));
         }
       }, 1500);
     });
@@ -63,7 +67,7 @@ export const fetchSalesReport = (): Promise<SalesReport[]> => {
                     { totalSales: 10500, unitsSold: 700, averagePrice: 15}
                 ]);
             } else {
-                reject("Failed to fetch sales report.")
+                reject(new NetworkError("Failed to fetch sales report."))
             }
         }, 1000);
     });
