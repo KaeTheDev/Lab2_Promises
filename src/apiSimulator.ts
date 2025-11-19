@@ -22,13 +22,21 @@ interface Product {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (Math.random() < 0.8) {
-          resolve([
+          const products: Product[] = [
             { id: 1, name: "Laptop", price: 1200 },
             { id: 2, name: "Headphones", price: 200 },
-            { id: 3, name: "Phone", price: 15},
-          ]);
-
-          
+            { id: 3, name: "Phone", price: 15 },
+          ];
+  
+          // Validate product data
+          for (const p of products) {
+            if (!p.id || !p.name || !p.price) {
+              reject(new DataError(`Invalid product data: ${JSON.stringify(p)}`));
+              return;
+            }
+          }
+  
+          resolve(products);
         } else {
           reject(new NetworkError("Failed to fetch product catalog"));
         }
@@ -49,8 +57,15 @@ export const fetchProductReviews = (
             { productId: 2, rating: 4, productReview: "Good sound" },
           ];
   
-          // Filter only reviews for the requested productId
-          resolve(allReviews.filter((r) => r.productId === productId));
+          const reviews = allReviews.filter((r) => r.productId === productId);
+  
+          // If no reviews exist for the product, throw a DataError
+          if (reviews.length === 0) {
+            reject(new DataError(`No reviews found for product ID ${productId}`));
+            return;
+          }
+  
+          resolve(reviews);
         } else {
           reject(new NetworkError(`Failed to fetch reviews for product ID ${productId}`));
         }
@@ -62,13 +77,23 @@ export const fetchSalesReport = (): Promise<SalesReport[]> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             if (Math.random() < 0.8) {
-                resolve([
-                    { totalSales: 7500, unitsSold: 400, averagePrice: 18.75},
-                    { totalSales: 10500, unitsSold: 700, averagePrice: 15}
-                ]);
+              const reports: SalesReport[] = [
+                { totalSales: 7500, unitsSold: 400, averagePrice: 18.75 },
+                { totalSales: 10500, unitsSold: 700, averagePrice: 15 },
+              ];
+      
+              // Validate report data
+              for (const r of reports) {
+                if (r.totalSales == null || r.unitsSold == null || r.averagePrice == null) {
+                  reject(new DataError(`Invalid sales report data: ${JSON.stringify(r)}`));
+                  return;
+                }
+              }
+      
+              resolve(reports);
             } else {
-                reject(new NetworkError("Failed to fetch sales report."))
+              reject(new NetworkError("Failed to fetch sales report."));
             }
-        }, 1000);
-    });
-}
+          }, 1000);
+        });
+      };
